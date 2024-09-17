@@ -2,9 +2,10 @@
 *******Disclaimer:**********************************************************************************
 This scripts are offered "as is" with no warranty.  
 It is recommended that you test this script in a test lab before using in a production environment. 
+vSphere Cluster name must be the same as FlashArray HostGroup name
+ESXi host names must be the same as the FlashArray Host names
 16 SEPT 2024 - Jase McCarty - Pure Storage
 *******Disclaimer:**********************************************************************************
-
 SYNTAX: Chap-Iscsi.ps1 -FaEndpoint flasharray.testdrive.local -vcenter vcsa.testdrive.local
 #>
 
@@ -37,7 +38,7 @@ If ($PowerCLIVersion.Version.Major -ge "13") {
     exit
 }
 
-# Set the PowerCLI configuration to ignore incd /self-signed certificates
+# Set the PowerCLI configuration to ignore/self-signed certificates
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$False | Out-Null 
 
 #########################################################
@@ -78,10 +79,12 @@ If ($PSPSDKVersion.Version.Major -ge "2") {
 #########################################################
 # Check to see if a current FlashArray session is in place
 If ($PURE_AUTH_2_X.ArrayName -ne $FaEndpoint) {
-    # Disconnect from the currently connected FlashArray
+    # Disconnect from the currently connected FlashArray if the name doesn't match
     try {Disconnect-Pfa2Array}  catch {}
+
     # Null out the Default FlashArray Global Variable
     $PURE_AUTH_2_X = $null
+
     # If no FlashArray Endpoint was passed, prompt for it
     if ($null -eq $FaEndpoint) {
         $FaEndpoint = Read-Host "Please enter the FlashArray FQDN"  
