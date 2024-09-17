@@ -80,7 +80,7 @@ If ($PSPSDKVersion.Version.Major -ge "2") {
 # Check to see if a current FlashArray session is in place
 If ($PURE_AUTH_2_X.ArrayName -ne $FaEndpoint) {
     # Disconnect from the currently connected FlashArray if the name doesn't match
-    try {Disconnect-Pfa2Array}  catch {}
+    try {Disconnect-Pfa2Array}  catch { Write-Host $Error }
 
     # Null out the Default FlashArray Global Variable
     $PURE_AUTH_2_X = $null
@@ -210,6 +210,7 @@ $Cluster | Get-VMhost | Sort-Object Name | Foreach-Object {
                 New-IScsiHbaTarget -IScsiHba $HostHba -Address $HostStaticTargetAddress -Port 3260 -IScsiName $FlashArrayIqn -Type Static
             } Catch {
                 Write-Host "Could not create Static Target $($HostStaticTargetAddress) on $($EsxiHost.Name)" -NoNewline Red
+                Write-Host $Error
             }
             Write-Host " "
         }
@@ -233,6 +234,7 @@ $PureHosts | Foreach-Object {
         Write-Host " "
     } Catch {
         Write-Host "Could not update the ChapHostPassword and/or ChapTargetPassword for FlashArray Host $($_.Name)" -ForegroundColor Red
+        Write-Host $Error
         Write-Host " "
     }
 }
