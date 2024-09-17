@@ -6,7 +6,6 @@ It is recommended that you test this script in a test lab before using in a prod
 *******Disclaimer:**********************************************************************************
 
 SYNTAX: Chap-Iscsi.ps1 -FaEndpoint flasharray.testdrive.local -vcenter vcsa.testdrive.local
-
 #>
 
 Param
@@ -14,7 +13,6 @@ Param
     [Parameter(ValueFromPipeline,Mandatory=$true)][String]$FaEndpoint,
     [Parameter(ValueFromPipeline,Mandatory=$true)][String]$vcenter
 )
-
 
 #########################################################
 # Set our ChapHostPassword & ChapTargetPassword         #
@@ -28,7 +26,7 @@ $chaptargetpassword = "asdfghjklpoiuytrewq1"
 # Get the PowerCLI Version
 $PowerCLIVersion = Get-Module -Name VMware.PowerCLI -ListAvailable | Select-Object -Property Version
 
-# If the PowerCLI Version is not v13 or higher, recommend that the user install PowerCLI 12 or higher
+# If the PowerCLI Version is not v13 or higher, recommend that the user install PowerCLI 13 or higher
 If ($PowerCLIVersion.Version.Major -ge "13") {
     Write-Host "PowerCLI version 13 or higher present, " -NoNewLine
     Write-Host "proceeding" -ForegroundColor Green 
@@ -212,8 +210,6 @@ $Cluster | Get-VMhost | Sort-Object Name | Foreach-Object {
             }
             Write-Host " "
         }
-        
-
         Get-VMHostStorage -VMHost $EsxiHost -RescanAllHba -RescanVmfs  | Out-Null
     }
 }
