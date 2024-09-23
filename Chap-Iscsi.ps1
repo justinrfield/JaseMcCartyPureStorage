@@ -4,7 +4,7 @@ This scripts are offered "as is" with no warranty.
 It is recommended that you test this script in a test lab before using in a production environment. 
 vSphere Cluster name must be the same as FlashArray HostGroup name
 ESXi host names must be the same as the FlashArray Host names
-16 SEPT 2024 - Jase McCarty - Pure Storage
+Need to paste your chap host and target passwords in the first section below for the scritp to run correctly
 *******Disclaimer:**********************************************************************************
 SYNTAX: Chap-Iscsi.ps1 -FaEndpoint flasharray.testdrive.local -vcenter vcsa.testdrive.local
 #>
@@ -234,7 +234,7 @@ $PureHosts | Foreach-Object {
         else {
             Write-Host "Updating the ChapHostPassword and ChapTarget Password for FlashArray Host $($PureHost.Name)"
             Try {
-                Update-Pfa2Host -Array $PURE_AUTH_2_X -Name $PureHost.Name -ChapHostPassword $chaphostpassword -ChapHostUser $($PureHost.Iqns).ToString() -ChapTargetPassword $chaptargetpassword -ChapTargetUser $($PureHost.Iqns).toString() | Out-Null
+                Update-Pfa2Host -Array $PURE_AUTH_2_X -Name $PureHost.Name -ChapHostPassword $chaphostpassword -ChapHostUser $($PureHost.Iqns).ToString() -ChapTargetPassword $chaptargetpassword -ChapTargetUser $($PureHost.Iqns).ToString() | Out-Null
                 Write-Host "Successfully updated the ChapHostPassword and/or ChapTargetPassword for FlashArray Host $($_.Name)" -ForegroundColor Green
                 Write-Host " "
             } Catch {
